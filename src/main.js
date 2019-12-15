@@ -4,9 +4,11 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import vHeader from './components/headerCopm/headers'
+import vfooter from './components/headerCopm/foots'
 import '../config/rem'
 Vue.config.productionTip = false
 Vue.component('v-head',vHeader)
+Vue.component('v-footer',vfooter)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

@@ -4,7 +4,7 @@
       <div class="homeBody">
         <div class="homeBodyLeft">
           <div class="allTitleImg">
-            <div v-for="(item,index) in list" :key="index">
+            <div v-for="(item,index) in list" @click="goToUrl(item.url)" :key="index">
               <img class="titleImg" :src="item.img" alt="">
             </div>
           </div>
@@ -30,15 +30,18 @@
             list:[
               {
                 img:require('../assets/homeMsg.png'),
-                name:'家园介绍'
+                name:'家园介绍',
+                url:'/homestea'
               },
               {
                 img:require('../assets/homeMsg.png'),
-                name:'家园介绍'
+                name:'家园介绍',
+                url:'/Internet'
               },
               {
                 img:require('../assets/homeMsg.png'),
-                name:'家园介绍'
+                name:'家园介绍',
+                url:'/ISOC'
               },
               {
                 img:require('../assets/homeMsg.png'),
@@ -68,7 +71,17 @@
           }
         },
         created(){
+        },
+      methods:{
+        goToUrl(url){
+          this.$router.push({
+            path:url,
+            // query:{
+            //   id:this.id ,
+            // }
+          })
         }
+      }
     }
 </script>
 

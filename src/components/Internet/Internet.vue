@@ -1,12 +1,14 @@
 <template>
     <div>
-      <v-head  :message="headData"></v-head>
+      <v-head :message="headData"/>
       <div class="intBody">
-        <div>
-          <div class="banner">
-            <img src="../../assets/banner.png" alt="">
-          </div>
-        </div>
+
+        <swiper :options="swiperOption">
+          <swiper-slide class="banner" v-for="(item,index) in bannersList" :key="index">
+            　　　　<img  :src="item.imageUrl" alt="">
+          </swiper-slide>
+          <div  class="swiper-pagination" id="pagination" slot="pagination"></div>
+        </swiper>
         <div class="AllIntTitle">
           <div class="intTitle">
             <span :class="nowIndexs == 0 ? 'nowIndex' : ''" @click="nowIndex(0)">
@@ -18,14 +20,15 @@
             </span>
           </div>
           <div class="AllIntText">
-            <div class="intText" v-for="(item,index) in 5">
-              <div><img src="../../assets/erweima.png" alt=""></div>
-              <span>浙江丹道网络科技有限公司始建于1999年,2008年公司党支部升格为集团党委，下辖3，，下辖3个二级党委、1个总支、2个直属支部，共有党，下辖3个二级党委、1个总支、2个直属支部，共有党下辖3个二级党委、1个总支、2个直属支部，共有党直属支部，共有党，下辖3个二级党委、1个总支、2个直属支部，共有党</span>
+            <div class="intText" v-for="(item,index) in list">
+              <div><img v-if="item.photos.length != 0" :src="item.photos[0]" alt=""></div>
+              <span>{{item.body}}</span>
             </div>
+            <div class="moreList" @click="moreData()">加载更多</div>
           </div>
         </div>
       </div>
-      <v-footer></v-footer>
+      <v-footer/>
     </div>
 </template>
 
@@ -35,24 +38,94 @@
       data(){
           return{
             headData: '互联网党建',
-            nowIndexs : 0
+            nowIndexs : 0,
+            list: [],
+            swiperOption: {
+              autoplay: {
+                delay: 2500,
+                disableOnInteraction: false
+              },
+              pagination: {
+                el: '.swiper-pagination'
+              },
+              paginationClickable: true,
+              autoplayDisableOnInteraction: false,
+              loop: true,
+              coverflow: {
+                rotate: 30,
+                stretch: 10,
+                depth: 60,
+                modifier: 2,
+                slideShadows: true,
+              }
+            },
+            bannersList:[],
+            moreNum : 0,
           }
       },
+      created() {
+        this.ajax.get('banners?pattern=index&scene=internet').then((res) => {
+          this.bannersList = res.data
+        })
+       this.nowIndex(0)
+      },
+      mounted() {
+      },
       methods:{
+        moreData(){
+          if(this.nowIndexs == 0 ){
+            this.ajax.get('articles?categoryId=10&from=0&size=9999').then((res) => {
+              this.list = res.data.items
+            })
+          }
+          if(this.nowIndexs == 1 ){
+            this.ajax.get('articles?categoryId=11&from=0&size=9999').then((res) => {
+              this.list = res.data.items
+            })
+          }
+          if(this.nowIndexs == 2 ){
+            this.ajax.get('articles?categoryId=12&from=0&size=9999').then((res) => {
+              this.list = res.data.items
+            })
+          }
+        },
         nowIndex(index){
           this.nowIndexs = index
+          if(this.nowIndexs == 0 ){
+            this.ajax.get('articles?categoryId=10&from=0&size=8').then((res) => {
+              this.list = res.data.items
+            })
+          }
+          if(this.nowIndexs == 1 ){
+            this.ajax.get('articles?categoryId=11&from=0&size=5').then((res) => {
+              this.list = res.data.items
+            })
+          }
+          if(this.nowIndexs == 2 ){
+            this.ajax.get('articles?categoryId=12&from=0&size=5').then((res) => {
+              this.list = res.data.items
+            })
+          }
         }
       }
     }
 </script>
 
 <style scoped>
+  ::-webkit-scrollbar-track { background-color: white;}
+  ::-webkit-scrollbar {  width: 5px;height:8px;  background-color: #D8D8D8;}
+  ::-webkit-scrollbar-thumb { /* */background: #D8D8D8;}
+  ::-webkit-scrollbar-corner{ background-color: #D8D8D8;}
 .intBody{
   margin-top: 52px;
 }
-  .banner img{
-    margin-right: 20px;
+  .banner{
+    /*margin-right: 20px;*/
     margin-top: 20px;
+    width:452px;
+    height:302px;
+  }
+  .banner img{
     width:452px;
     height:302px;
   }
@@ -82,11 +155,13 @@
   .AllIntTitle{
     width:406px;
     height:350px;
+    margin-right: 35px;
     background:rgba(250,252,255,1);
     box-shadow:0px 1px 8px 0px rgba(35,24,21,0.2);
   }
   .AllIntText{
     height: 290px;
+    width: 400px;
     overflow: hidden;
     margin-top: 5px;
     overflow-y: scroll;
@@ -129,5 +204,15 @@
   .intText div img{
     width:93px;
     height:70px;
+  }
+  .moreList{
+    font-size:12px;
+    font-family:PingFangSC;
+    font-weight:400;
+    color:rgba(51,51,51,1);
+    text-align: center;
+    height: 35px;
+    line-height: 35px;
+    cursor:pointer;
   }
 </style>

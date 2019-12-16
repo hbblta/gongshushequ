@@ -1,26 +1,20 @@
 <template>
     <div>
-      <v-head :message="headData"></v-head>
+      <v-head :message="headData"/>
         <div class="allBody">
           <div class="leftBody">
-            <div>协会简介</div>
-            <div>协会章程</div>
-            <div>会员单位</div>
-            <div>协会风采</div>
-            <div>入会申请</div>
+            <div @click="nowIndexs(0)" :class="nowIndex == 0 ?  'nowIndex' : ''">协会简介</div>
+            <div @click="nowIndexs(1)" :class="nowIndex == 1 ?  'nowIndex' : ''">协会章程</div>
+            <div @click="nowIndexs(2)" :class="nowIndex == 2 ?  'nowIndex' : ''">会员单位</div>
+            <div @click="nowIndexs(3)" :class="nowIndex == 3 ?  'nowIndex' : ''">协会风采</div>
+            <div @click="nowIndexs(4)" :class="nowIndex == 4 ?  'nowIndex' : ''">入会申请</div>
           </div>
           <div class="rightBody">
-            <div class="rightBodyText">
-              <p>入 会 须 知</p>
-              <p>1、拥护本协会的章程；   </p>
-              <p>2、有加入本协会的意愿；</p>
-              <p>3、在本团体的业务（行业、学科）领域内具有一定影响；</p>
-              <p>4、支持并参加本行业的</p>
-              <p>5、单位会员应当依法登记并履行社会责任</p>
+            <div class="rightBodyText" ref="rightBodyText">
             </div>
           </div>
         </div>
-      <v-footer></v-footer>
+      <v-footer/>
     </div>
 </template>
 
@@ -29,19 +23,40 @@
         name: "ISOC",
       data(){
           return{
-            headData :'互联网协会'
+            headData :'互联网协会',
+            nowIndex:0,
+            rightBodyTextList : []
         }
-      }
+      },
+      mounted() {
+        this.ajax.get('categories/3?pattern=full').then((res) => {
+
+          this.rightBodyTextList = res.data.articles
+          this.$refs.rightBodyText.innerHTML = this.rightBodyTextList[this.nowIndex].body
+          console.log(this.rightBodyTextList[this.nowIndex])
+        })
+      },
+      methods:{
+        nowIndexs(index){
+          this.nowIndex = index
+          this.$refs.rightBodyText.innerHTML = this.rightBodyTextList[this.nowIndex].body
+        }
+    }
     }
 </script>
 
 <style scoped>
+  ::-webkit-scrollbar-track { background-color: white;  }
+  ::-webkit-scrollbar {  width: 5px;height:8px;  background-color: #D8D8D8;border-radius: 5px;  }
+  ::-webkit-scrollbar-thumb { /* */background: #D8D8D8;border-radius: 5px; }
+  ::-webkit-scrollbar-corner{ background-color: #D8D8D8;}
 .allBody{
   display: flex;
   margin-left: 50px;
 }
 .leftBody{
   margin-top: 27px;
+  cursor:pointer;
 }
 .leftBody div{
   width:130px;
@@ -67,23 +82,19 @@
   .rightBodyText{
     width:543px;
     height:286px;
-    background: #dddddd;
+    background: white;
     padding: 20px;
   }
-  .rightBodyText p{
-    font-size:16px;
-    font-family:PingFangSC;
-    font-weight:500;
-    color:rgba(255,255,255,1);
-    padding-left: 35px;
-    padding-top: 20px;
-  }
-  .rightBodyText p:nth-child(1){
+  .rightBodyText{
     font-size:23px;
     font-family:PingFangSC;
-    font-weight:700;
-    color:rgba(255,255,255,1);
-    text-align: center;
+    color:rgba(102,102,102,1);
     padding-top: 0px;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+  .nowIndex{
+    background:rgba(218,45,55,1)!important;
+    color:rgba(255,255,255,1)!important;
   }
 </style>

@@ -1,129 +1,144 @@
 <template>
-    <div>
-      <v-head :message="headData"></v-head>
-      <div class="homeBody">
-        <div class="homeBodyLeft">
-          <div class="allTitleImg">
-            <div v-for="(item,index) in list" @click="goToUrl(item.url)" :key="index">
-              <img class="titleImg" :src="item.img" alt="">
-            </div>
+  <div>
+    <v-head :message="headData"></v-head>
+    <div class="homeBody">
+      <div class="homeBodyLeft">
+        <div class="allTitleImg">
+          <div v-for="(item,index) in list" @click="goToUrl(item.url)" :key="index">
+            <img class="titleImg" :src="item.imageUrl" alt="">
           </div>
         </div>
-        <div class="homeBodyRight">
-          <div class="banner"><img src="../assets/banner.png" alt=""></div>
-          <div class="erweimaImg">
-            <img src="../assets/erweima.png" alt="">
-            <img src="../assets/erweima.png" alt="">
-          </div>
-
+      </div>
+      <div class="homeBodyRight">
+        <div class="banner">
+          <swiper :options="swiperOption">
+            <swiper-slide v-for="(item,index) in bannersList" :key="index">
+              　　　　<img :src="item.imageUrl" alt="">
+            </swiper-slide>
+            <div class="swiper-pagination" id="pagination" slot="pagination"></div>
+          </swiper>
+        </div>
+        <div class="erweimaImg">
+          <img  :src="erweiList.imageUrl" alt="">
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "index",
-        data(){
-          return{
-            headData: '拱宸网络家园',
-            list:[
-              {
-                img:require('../assets/homeMsg.png'),
-                name:'家园介绍',
-                url:'/homestea'
-              },
-              {
-                img:require('../assets/homeMsg.png'),
-                name:'家园介绍',
-                url:'/Internet'
-              },
-              {
-                img:require('../assets/homeMsg.png'),
-                name:'家园介绍',
-                url:'/ISOC'
-              },
-              {
-                img:require('../assets/homeMsg.png'),
-                name:'家园介绍'
-              },
-              {
-                img:require('../assets/homeMsg.png'),
-                name:'家园介绍'
-              },
-              {
-                img:require('../assets/homeMsg.png'),
-                name:'家园介绍'
-              },
-              {
-                img:require('../assets/homeMsg.png'),
-                name:'家园介绍'
-              },
-              {
-                img:require('../assets/homeMsg.png'),
-                name:'家园介绍'
-              },
-              {
-                img:require('../assets/homeMsg.png'),
-                name:'家园介绍'
-              },
-            ]
+  export default {
+    name: "index",
+    data() {
+      return {
+        headData: '墅说运河',
+        list: [],
+        bannersList: [],
+        swiperOption: {
+          autoplay: {
+            delay: 2500,
+            disableOnInteraction: false
+          },
+          pagination: {
+            el: '.swiper-pagination'
+          },
+          paginationClickable: true,
+          autoplayDisableOnInteraction: false,
+          loop: true,
+          coverflow: {
+            rotate: 30,
+            stretch: 10,
+            depth: 60,
+            modifier: 2,
+            slideShadows: true,
           }
         },
-        created(){
-        },
-      methods:{
-        goToUrl(url){
-          this.$router.push({
-            path:url,
-            // query:{
-            //   id:this.id ,
-            // }
-          })
-        }
+        erweiList:{}
+      }
+    },
+    created() {
+      this.ajax.get('categories?pattern=index').then((res) => {
+        this.list = res.data
+      })
+      this.ajax.get('banners?pattern=index').then((res) => {
+        this.bannersList = res.data
+      })
+      this.ajax.get('storedobjects/indexqrcode').then((res) => {
+        this.erweiList = res.data
+      })
+    },
+    methods: {
+      goToUrl(url) {
+        this.$router.push({
+          path: url,
+          // query:{
+          //   id:this.id ,
+          // }
+        })
       }
     }
+  }
 </script>
 
 <style scoped>
-  .titleImg{
-    width:161px;
-    height:113px;
-    border-radius:10px 10px 10px 10px;
+  .wrapper {
+    width: 100%;
+    overflow: hidden;
+    height: 0;
+    padding-bottom: 31.25%;
   }
-  .allTitleImg{
+
+  .titleImg {
+    width: 161px;
+    height: 113px;
+    border-radius: 10px 10px 10px 10px;
+  }
+
+  .allTitleImg {
     display: flex;
     flex-wrap: wrap;
   }
-  .homeBody{
+
+  .homeBody {
     display: flex;
     margin-top: 43px;
     padding-left: 44px;
     padding-right: 42px;
   }
-  .allTitleImg div{
+
+  .allTitleImg div {
     padding-right: 23px;
     padding-bottom: 24px;
   }
-  .homeBodyLeft{
+
+  .homeBodyLeft {
     width: 555px;
   }
-  .homeBodyRight{
-    width:313px;
-    height:209px;
+
+  .homeBodyRight {
+    width: 313px;
+    height: 209px;
     background: #ddd;
     margin-top: 11px;
   }
-  .banner img{
-    width:313px;
-    height:209px;
+
+  .banner {
+    position: relative;
   }
-  .erweimaImg{
+
+  .banner img {
+    width: 313px;
+    height: 209px;
+  }
+
+  .erweimaImg {
     margin-top: 54px;
   }
-  .erweimaImg img{
-    width:101px;
-    height:101px;
+
+  .erweimaImg img {
+    width: 101px;
+    height: 101px;
     margin-left: 40px;
   }
+
 </style>

@@ -2,16 +2,16 @@
   <div>
     <v-head :message="headData"/>
     <div class="homeTitle">
-      <span :class="nowIndex == 0 ? 'nowIndex' : ''" @click="changIndex(0)">党建引领</span>
+      <span :class="nowIndex == 0 ? 'nowIndex' : ''" @click="changIndex(0)">文化交融</span>
       <span :class="nowIndex == 1 ? 'nowIndex' : ''" @click="changIndex(1)">制度规范</span>
-      <span :class="nowIndex == 2 ? 'nowIndex' : ''" @click="changIndex(2)">文化交融</span>
+      <span :class="nowIndex == 2 ? 'nowIndex' : ''" @click="changIndex(2)">党建引领</span>
     </div>
     <div class="homeBody">
-        <div class="homeBodyData" v-for="(item,index) in list">
-          <div class="homeBodyImg"><img :src="item.img" alt=""></div>
+        <div class="homeBodyData" @click="goToText(item.type,item.id,item.title)" v-for="(item,index) in list">
+          <div class="homeBodyImg"><img :src="item.photos ? item.photos[0] : item.coverUrl ? item.coverUrl : ''" alt=""></div>
           <div class="homeBodyText">
             <p>{{item.title}}</p>
-            <div>{{item.date}}</div>
+            <div>{{item.createTime}}</div>
           </div>
         </div>
     </div>
@@ -26,39 +26,39 @@
             return{
               headData:'网络治理',
               nowIndex : 0,
-              list:[
-                {
-                  img:require('../../assets/homeMsg.png'),
-                  title:'人民日报短评：统一司法标准打击网络犯罪',
-                  date:'热点追踪   2019-04-30'
-                },
-                {
-                  img:require('../../assets/homeMsg.png'),
-                  title:'人民日报短评：统一司法标准打击网络犯罪',
-                  date:'热点追踪   2019-04-30'
-                },
-                {
-                  img:require('../../assets/homeMsg.png'),
-                  title:'人民日报短评：统一司法标准打击网络犯罪',
-                  date:'热点追踪   2019-04-30'
-                },
-                {
-                  img:require('../../assets/homeMsg.png'),
-                  title:'人民日报短评：统一司法标准打击网络犯罪',
-                  date:'热点追踪   2019-04-30'
-                },
-                {
-                  img:require('../../assets/homeMsg.png'),
-                  title:'人民日报短评：统一司法标准打击网络犯罪',
-                  date:'热点追踪   2019-04-30'
-                }
-              ]
+              list:[]
             }
         },
+      mounted() {
+        this.ajax.get('categories/5?pattern=full').then((res) => {
+          this.allList  = res.data.children
+          this.list = this.allList[this.nowIndex].articles
+        })
+      },
       methods:{
         changIndex(index){
           this.nowIndex = index
-        }
+          this.list = this.allList[this.nowIndex].articles
+        },
+        goToText(type,id,title) {
+          if(type == 'text'){
+            this.$router.push({
+              path: '/textImg',
+              query:{
+                id: id,
+                title : title
+              }
+            })
+          }else{
+            this.$router.push({
+              path: '/videosHtml',
+              query:{
+                id: id,
+                title : title
+              }
+            })
+          }
+      }
       }
     }
 </script>

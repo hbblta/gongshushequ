@@ -3,17 +3,17 @@
     <v-head :message="headData"/>
     <div class="moreData">
         <div class="moreImg">
-        <img v-for="(item,index) in 4"  :class="index == 0 ?'' :'moerLeft'" src="../../assets/homeMsg.png" alt="">
+        <img @click="changeIndex(index)" v-for="(item,index) in allList"  :class="index == 0 ?'' :'moerLeft'" :src="item.imageUrl" alt="">
       </div>
       <div class="moreText">
-        <div class="moreTextFor" :class="index == 0 ?'' :'TextLeft'" v-for="(item,index) in list">
+        <div class="moreTextFor" @click="goToText(item.type,item.id,item.title)" :class="index == 0 ?'' :'TextLeft'" v-for="(item,index) in list">
           <div class="moreImgs">
             <img  src="../../assets/more.png" alt="">
-            <span>{{item.time}}</span>
+            <span>{{item.createTime}}</span>
           </div>
           <hr style="margin: 4px 0 23px 0;height: 1px;color: rgba(240,240,240,1); background:rgba(240,240,240,1);">
           <div class="moreTitle">{{item.title}}</div>
-          <div class="moreTextData">{{item.text}}</div>
+          <div class="moreTextData">{{item.body}}</div>
         </div>
       </div>
     </div>
@@ -27,21 +27,41 @@
       data(){
         return{
           headData:'更多',
-          list: [
-            {
-              time:'2019-9-28  07:30',
-              title:'浙江五个千亿投资工程实施 看看主要投向 哪些领域..',
-              text:'2019年省政府工作报告明确要求：“着力推进数字经济、生命健康、高端装备、文化旅游、能源环保等五个千亿投资工程，谋划实施一批产'
-            },
-            {
-              time:'2019-9-28  07:30',
-              title:'浙江五个千亿投资工程实施 看看主要投向 哪些领域..',
-              text:'2019年省政府工作报告明确要求：“着力推进数字经济、生命健康、高端装备、文化旅游、能源环保等五个千亿投资工程，谋划实施一批产'
-            },
-          ]
+          list: [],
+          allList:[],
         }
       },
+      mounted() {
+        this.ajax.get('categories/9?pattern=full').then((res) => {
+          this.allList = res.data.children
+          this.changeIndex(0)
+        })
+
+      },
       methods:{
+        changeIndex(index){
+          this.list = this.allList[index].articles
+        },
+        goToText(type,id,title) {
+          if(type == 'text'){
+            this.$router.push({
+              path: '/textImg',
+              query:{
+                id: id,
+                title:title
+              }
+            })
+          }else{
+            this.$router.push({
+              path: '/videosHtml',
+              query:{
+                id: id,
+                title:title
+              }
+            })
+          }
+
+        }
       }
     }
 </script>
@@ -106,5 +126,10 @@
     font-weight:400;
     color:rgba(51,51,51,1);
     padding-top: 13px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:5;
   }
 </style>

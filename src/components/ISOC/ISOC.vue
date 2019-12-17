@@ -30,10 +30,8 @@
       },
       mounted() {
         this.ajax.get('categories/3?pattern=full').then((res) => {
-
           this.rightBodyTextList = res.data.articles
           this.$refs.rightBodyText.innerHTML = this.rightBodyTextList[this.nowIndex].body
-          console.log(this.rightBodyTextList[this.nowIndex])
         })
       },
       methods:{
@@ -86,12 +84,14 @@
     padding: 20px;
   }
   .rightBodyText{
-    font-size:23px;
-    font-family:PingFangSC;
-    color:rgba(102,102,102,1);
+    font-size:17px;
+    font-family:PingFangSC,serif;
     padding-top: 0px;
     overflow: hidden;
     overflow-y: auto;
+    font-weight:400;
+    color:rgba(51,51,51,1);
+    line-height: 26px;
   }
   .nowIndex{
     background:rgba(218,45,55,1)!important;

@@ -5,7 +5,7 @@
 
         <swiper :options="swiperOption">
           <swiper-slide class="banner" v-for="(item,index) in bannersList" :key="index">
-            　　　　<img  :src="item.imageUrl" alt="">
+            　　　　<img  @click="goBanner(item.url)" :src="item.imageUrl" alt="">
           </swiper-slide>
           <div  class="swiper-pagination" id="pagination" slot="pagination"></div>
         </swiper>
@@ -20,8 +20,8 @@
             </span>
           </div>
           <div class="AllIntText">
-            <div class="intText" v-for="(item,index) in list">
-              <div><img v-if="item.photos.length != 0" :src="item.photos[0]" alt=""></div>
+            <div class="intText" @click="goToText(item.type,item.id,item.title)" v-for="(item,index) in list">
+              <div><img v-if="item.photos.length != 0" :src="item.photos[0] ?item.photos[0] : item.coverUrl ? item.coverUrl : ''" alt=""></div>
               <span>{{item.body}}</span>
             </div>
             <div class="moreList" @click="moreData()">加载更多</div>
@@ -88,6 +88,32 @@
               this.list = res.data.items
             })
           }
+        },
+        goBanner(url) {
+          if(url == undefined){
+            return
+          }
+          window.location.href = url
+        },
+        goToText(type,id,title) {
+          if(type == 'text'){
+            this.$router.push({
+              path: '/textImg',
+              query:{
+                id: id,
+                title : title
+              }
+            })
+          }else{
+            this.$router.push({
+              path: '/videosHtml',
+              query:{
+                id: id,
+                title : title
+              }
+            })
+          }
+
         },
         nowIndex(index){
           this.nowIndexs = index

@@ -9,23 +9,23 @@
       <div>
         <div class="downMore left"><img @click="rightMore" src="../../assets/left.png" alt=""></div>
         <div class="aboutText">
-          <div class="aboutTextData" v-if="oneData">
-            <img :src="oneData.photos[0]" alt="">
-            <p>{{oneData.body}}</p>
-            <div>{{oneData.title}}</div>
+          <div class="aboutTextData" @click="goToText(oneData.type,oneData.id,oneData.title)" v-if="oneData">
+            <img :src="oneData.photos ? oneData.photos[0] : oneData.coverUrl ? oneData.coverUrl : ''"  alt="">
+            <p>{{oneData.title}}</p>
+            <div>{{oneData.body}}</div>
             <hr>
           </div>
-          <div class="aboutTextData aboutTextDataTwo" v-if="twoData">
-            <img :src="twoData.photos[0]" alt="">
-            <p>{{twoData.body}}</p>
-            <div>{{twoData.title}}</div>
+          <div class="aboutTextData aboutTextDataTwo" @click="goToText(twoData.type,twoData.id,twoData.title)" v-if="twoData">
+            <img :src="twoData.photos ? twoData.photos[0] : twoData.coverUrl ? twoData.coverUrl : ''" alt="">
+            <p>{{twoData.title}}</p>
+            <div>{{twoData.body}}</div>
             <hr>
           </div>
         </div>
         <div @click="leftMore" class="downMore right"><img src="../../assets/right.png" alt=""></div>
       </div>
     </div>
-    <v-footer></v-footer>
+    <v-footer/>
   </div>
 </template>
 
@@ -78,6 +78,26 @@
           this.twoIndex  = this.twoIndex - 2
           this.oneData = this.list[this.oneIndex]
           this.twoData = this.list[this.twoIndex]
+        },
+        goToText(type,id,title) {
+          if(type == 'text'){
+            this.$router.push({
+              path: '/textImg',
+              query:{
+                id: id,
+                title : title
+              }
+            })
+          }else{
+            this.$router.push({
+              path: '/videosHtml',
+              query:{
+                id: id,
+                title : title
+              }
+            })
+          }
+
         }
       }
     }
@@ -154,6 +174,11 @@
     color:rgba(17,17,17,1);
   }
   .aboutTextData div{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:1;
     font-size:14px;
     font-family:PingFangSC;
     font-weight:400;

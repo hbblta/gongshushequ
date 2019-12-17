@@ -9,14 +9,16 @@
       <div>
         <div class="downMore left"><img @click="rightMore" src="../../assets/left.png" alt=""></div>
         <div class="aboutText">
-          <div class="aboutTextData" v-if="oneData">
-            <img :src="oneData.img" alt="">
-            <div>{{oneData.dizhi}}</div>
+          <div class="aboutTextData" @click="goToText(oneData.type,oneData.id,oneData.title)" v-if="oneData">
+            <img :src="oneData.photos ? oneData.photos[0] :oneData.coverUrl ? oneData.coverUrl :   ''"  alt="">
+            <p>{{oneData.title}}</p>
+            <div>{{oneData.body}}</div>
             <hr>
           </div>
-          <div class="aboutTextData aboutTextDataTwo" v-if="twoData">
-            <img :src="twoData.img" alt="">
-            <div>{{twoData.dizhi}}</div>
+          <div class="aboutTextData aboutTextDataTwo" @click="goToText(twoData.type,twoData.id,twoData.title)" v-if="twoData">
+            <img :src="twoData.photos ? twoData.photos[0] :twoData.coverUrl ? twoData.coverUrl :   ''" alt="">
+            <p>{{twoData.title}}</p>
+            <div>{{twoData.body}}</div>
             <hr>
           </div>
         </div>
@@ -29,7 +31,7 @@
 
 <script>
   export default {
-    name: "welfare",
+    name: "AboutUs",
     data(){
       return{
         headData:'网络公益',
@@ -38,38 +40,26 @@
         twoData :null,
         oneIndex : 0,
         twoIndex : 1,
-        list:[
-          {
-            img:require('../../assets/homeMsg.png'),
-            dizhi:'拱墅区发起环境保护活动为解决现实或潜在的环境问1题，协 调人类与环境的关系...'
-          },
-          {
-            img:require('../../assets/homeMsg.png'),
-            dizhi:'拱墅区发起环境保护活动为解决现实或潜在的环2境问题，协 调人类与环境的关系...'
-          },
-          {
-            img:require('../../assets/homeMsg.png'),
-            dizhi:'拱墅区发起环境保护活动为解决现实或潜在的环境问3题，协 调人类与环境的关系...'
-          },
-          {
-            img:require('../../assets/homeMsg.png'),
-            dizhi:'拱墅区发起环境保护活动为解决现实或潜在的环4境问题，协 调人类与环境的关系...'
-          },
-          {
-            img:require('../../assets/homeMsg.png'),
-            dizhi:'拱墅区发起环境保护活动为解决现实或潜在的环境问5题，协 调人类与环境的关系...'
-          },
-        ]
+        allList:[],
+        list:[]
       }
     },
     mounted() {
-      this.oneData = this.list[this.oneIndex]
-      this.twoData = this.list[this.twoIndex]
-
+      this.ajax.get('categories/7?pattern=full').then((res) => {
+        this.allList = res.data.children
+        this.list  = this.allList[this.nowIndex].articles
+        this.oneData = this.list[this.oneIndex]
+        this.twoData = this.list[this.twoIndex]
+      })
     },
     methods:{
       changIndex(index){
         this.nowIndex = index
+        this.list  = this.allList[this.nowIndex].articles
+        this.oneIndex = 0
+        this.twoIndex = 1
+        this.oneData = this.list[this.oneIndex]
+        this.twoData = this.list[this.twoIndex]
       },
       leftMore(){
         if(this.oneIndex == this.list.length || this.twoIndex == this.list.length){
@@ -88,6 +78,26 @@
         this.twoIndex  = this.twoIndex - 2
         this.oneData = this.list[this.oneIndex]
         this.twoData = this.list[this.twoIndex]
+      },
+      goToText(type,id,title) {
+        if(type == 'text'){
+          this.$router.push({
+            path: '/textImg',
+            query:{
+              id: id,
+              title:title
+            }
+          })
+        }else{
+          this.$router.push({
+            path: '/videosHtml',
+            query:{
+              id: id,
+              title:title
+            }
+          })
+        }
+
       }
     }
   }
@@ -157,22 +167,26 @@
     height:250px;
     border-radius:3px;
   }
+  .aboutTextData p{
+    font-size:18px;
+    font-family:PingFangSC;
+    font-weight:500;
+    color:rgba(17,17,17,1);
+  }
   .aboutTextData div{
+    overflow: hidden;
+    text-overflow:ellipsis;
+    display:-webkit-box;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:1;
     font-size:14px;
     font-family:PingFangSC;
     font-weight:400;
     color:rgba(153,153,153,1);
     padding-top: 10px;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    display:-webkit-box;
-    -webkit-box-orient:vertical;
-    -webkit-line-clamp:2;
-
   }
   .aboutTextData hr{
     height:1px;
     background:rgba(170,170,170,1);
   }
 </style>
-

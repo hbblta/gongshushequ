@@ -12,6 +12,8 @@ import Cultural from '../components/Cultural/Cultural'
 import moer from '../components/moer/moer'
 import InternetBanner from '../components/Internet/InternetBanner'
 import InternetText from '../components/Internet/InternetText'
+import textImg from '../components/headerCopm/textImg'
+import videosHtml from '../components/headerCopm/videosHtml'
 
 Vue.use(Router)
 
@@ -76,6 +78,16 @@ export default new Router({
       path: '/InternetText',
       name: 'InternetText',
       component: InternetText
+    },
+    {//图文详情
+      path: '/textImg',
+      name: 'textImg',
+      component: textImg
+    },
+    {//视频详情
+      path: '/videosHtml',
+      name: 'videosHtml',
+      component: videosHtml
     },
   ]
 })

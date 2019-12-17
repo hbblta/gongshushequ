@@ -1,6 +1,6 @@
 <template>
   <div id="videoDiv">
-    <video  @click="plays" ref="videos" :src="videoData" :poster="imgSrc">
+    <video  @click="plays" ref="videos" :src="videoData" >
     </video>
     <div @click="plays"  v-if="!playBol"  class="video-img"></div>
   </div>
@@ -9,7 +9,7 @@
 <script>
     export default {
         name: "videos",
-        props:["videoData","imgSrc"],
+        props:["videoData"],
       data(){
           return{
             playBol:false

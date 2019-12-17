@@ -13,13 +13,14 @@
         <div class="banner">
           <swiper :options="swiperOption">
             <swiper-slide v-for="(item,index) in bannersList" :key="index">
-              　　　　<img :src="item.imageUrl" alt="">
+              　　　　<img  @click="goBanner(item.url)" :src="item.imageUrl" alt="">
             </swiper-slide>
             <div class="swiper-pagination" id="pagination" slot="pagination"></div>
           </swiper>
         </div>
         <div class="erweimaImg">
-          <img  :src="erweiList.imageUrl" alt="">
+          <img  :src="erweiList.leftQrCodeUrl" alt="">
+          <img  :src="erweiList.rightQrCodeUrl" alt="">
         </div>
       </div>
     </div>
@@ -75,6 +76,12 @@
           //   id:this.id ,
           // }
         })
+      },
+      goBanner(url) {
+        if(url == undefined){
+          return
+        }
+        window.location.href = url
       }
     }
   }

@@ -2,9 +2,7 @@
   <div>
     <v-head :message="headData"/>
     <div class="homeTitle">
-      <span :class="nowIndex == 0 ? 'nowIndex' : ''" @click="changIndex(0)">文化交融</span>
-      <span :class="nowIndex == 1 ? 'nowIndex' : ''" @click="changIndex(1)">制度规范</span>
-      <span :class="nowIndex == 2 ? 'nowIndex' : ''" @click="changIndex(2)">党建引领</span>
+      <span v-for="(item,index) in allList" :class="nowIndex == index ? 'nowIndex' : ''" @click="changIndex(index)">{{item.name}}</span>
     </div>
     <div class="homeBody">
         <div class="homeBodyData" @click="goToText(item.type,item.id,item.title)" v-for="(item,index) in list">
@@ -26,7 +24,8 @@
             return{
               headData:'网络治理',
               nowIndex : 0,
-              list:[]
+              list:[],
+              allList : []
             }
         },
       mounted() {
@@ -36,6 +35,10 @@
         })
       },
       methods:{
+        ToText(HTML){
+          let input = HTML;
+          return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'');
+        },
         changIndex(index){
           this.nowIndex = index
           this.list = this.allList[this.nowIndex].articles
@@ -95,8 +98,7 @@
     width:730px;
     height:331px;
     background:rgba(250,252,255,1);
-    margin-left: 116px;
-    margin-top: 19px;
+    margin: 19px auto 0;
     overflow: hidden;
     overflow-y: scroll;
   }

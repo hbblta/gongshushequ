@@ -13,7 +13,7 @@
         <div class="banner">
           <swiper :options="swiperOption">
             <swiper-slide v-for="(item,index) in bannersList" :key="index">
-              　　　　<img  @click="goBanner(item.url)" :src="item.imageUrl" alt="">
+              　　　　<img  @click="goBanner(item.url)" :src="'https://img.zjdandaotech.com/'+item.imageUrl" alt="">
             </swiper-slide>
             <div class="swiper-pagination" id="pagination" slot="pagination"></div>
           </swiper>
@@ -61,7 +61,7 @@
       this.ajax.get('categories?pattern=index').then((res) => {
         this.list = res.data
       })
-      this.ajax.get('banners?pattern=index').then((res) => {
+      this.ajax.get('banners?scene=index').then((res) => {
         this.bannersList = res.data
       })
       this.ajax.get('storedobjects/indexqrcode').then((res) => {

@@ -2,8 +2,7 @@
   <div>
     <v-head :message="headData"></v-head>
     <div class="homeTitle">
-      <span :class="nowIndex == 0 ? 'nowIndex' : ''" @click="changIndex(0)">视频</span>
-      <span :class="nowIndex == 1 ? 'nowIndex' : ''" @click="changIndex(1)">图文</span>
+      <span v-for="(item,index) in allList" :class="nowIndex == index ? 'nowIndex' : ''" @click="changIndex(index)">{{item.name}}</span>
     </div>
     <div class="homeBody">
       <div>
@@ -12,13 +11,13 @@
           <div class="aboutTextData" @click="goToText(oneData.type,oneData.id,oneData.title)" v-if="oneData">
             <img :src="oneData.photos ? oneData.photos[0] :oneData.coverUrl ? oneData.coverUrl :  ''"  alt="">
             <p>{{oneData.title}}</p>
-            <div>{{oneData.body}}</div>
+            <div>{{ToText(oneData.body)}}</div>
             <hr>
           </div>
           <div class="aboutTextData aboutTextDataTwo" @click="goToText(twoData.type,twoData.id,twoData.title)" v-if="twoData">
             <img :src="twoData.photos ? twoData.photos[0] : twoData.coverUrl ? twoData.coverUrl :  ''" alt="">
             <p>{{twoData.title}}</p>
-            <div>{{twoData.body}}</div>
+            <div>{{ToText(twoData.body)}}</div>
             <hr>
           </div>
         </div>
@@ -53,6 +52,10 @@
       })
     },
     methods:{
+      ToText(HTML){
+        let input = HTML;
+        return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'');
+      },
       changIndex(index){
         this.nowIndex = index
         this.list  = this.allList[this.nowIndex].articles
@@ -116,7 +119,9 @@
     display: inline-block;
     margin-right: 20px;
     margin-left: 20px;
-    width:130px;
+    padding-left: 10px;
+    padding-right: 10px;
+    /*width:130px;*/
     height:40px;
     background:rgba(255,255,255,1);
     box-shadow:0px 1px 5px 0px rgba(0, 0, 0, 0.25);

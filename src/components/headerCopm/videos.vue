@@ -1,6 +1,6 @@
 <template>
   <div id="videoDiv">
-    <video  @click="plays" ref="videos" :src="videoData" >
+    <video   controls="controls" @click="plays" ref="videos" :src="videoData" >
     </video>
     <div @click="plays"  v-if="!playBol"  class="video-img"></div>
   </div>

@@ -13,7 +13,7 @@
           </div>
           <hr style="margin: 4px 0 23px 0;height: 1px;color: rgba(240,240,240,1); background:rgba(240,240,240,1);">
           <div class="moreTitle">{{item.title}}</div>
-          <div class="moreTextData">{{item.body}}</div>
+          <div class="moreTextData">{{ToText(item.body)}}</div>
         </div>
       </div>
     </div>
@@ -39,6 +39,10 @@
 
       },
       methods:{
+        ToText(HTML){
+          let input = HTML;
+          return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'');
+        },
         changeIndex(index){
           this.list = this.allList[index].articles
         },

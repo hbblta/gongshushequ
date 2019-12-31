@@ -3,11 +3,7 @@
       <v-head :message="headData"/>
         <div class="allBody">
           <div class="leftBody">
-            <div @click="nowIndexs(0)" :class="nowIndex == 0 ?  'nowIndex' : ''">协会简介</div>
-            <div @click="nowIndexs(1)" :class="nowIndex == 1 ?  'nowIndex' : ''">协会章程</div>
-            <div @click="nowIndexs(2)" :class="nowIndex == 2 ?  'nowIndex' : ''">会员单位</div>
-            <div @click="nowIndexs(3)" :class="nowIndex == 3 ?  'nowIndex' : ''">协会风采</div>
-            <div @click="nowIndexs(4)" :class="nowIndex == 4 ?  'nowIndex' : ''">入会申请</div>
+            <div v-for="(item,index) in rightBodyTextList" @click="nowIndexs(index)" :class="nowIndex == index ?  'nowIndex' : ''">{{item.title}}</div>
           </div>
           <div class="rightBody">
             <div class="rightBodyText" ref="rightBodyText">
@@ -29,6 +25,7 @@
         }
       },
       mounted() {
+
         this.ajax.get('categories/3?pattern=full').then((res) => {
           this.rightBodyTextList = res.data.articles
           this.$refs.rightBodyText.innerHTML = this.rightBodyTextList[this.nowIndex].body
@@ -86,10 +83,11 @@
   .rightBodyText{
     font-size:17px;
     font-family:PingFangSC,serif;
-    padding-top: 0px;
+    padding-top: 20px;
     overflow: hidden;
     overflow-y: auto;
     font-weight:400;
+    border-radius: 5px;
     color:rgba(51,51,51,1);
     line-height: 26px;
   }

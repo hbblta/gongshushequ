@@ -1,42 +1,44 @@
 <template>
-    <div>
-      <v-head :message="headData"/>
-      <div class="homeTitle">
-        <span :class="nowIndex == 0 ? 'nowIndex' : ''" @click="changIndex(0)">指导思想</span>
-        <span :class="nowIndex == 1 ? 'nowIndex' : ''" @click="changIndex(1)">基本原则</span>
-        <span :class="nowIndex == 2 ? 'nowIndex' : ''" @click="changIndex(2)">功能区块</span>
-        <span :class="nowIndex == 3 ? 'nowIndex' : ''" @click="changIndex(3)">参与方式</span>
-      </div>
-      <div class="homeBody">
-        <div ref="homeBody"></div>
-      </div>
-      <v-footer/>
+  <div>
+    <v-head :message="headData"/>
+    <div class="homeTitle">
+      <span v-for="(item,index) in titleList" @click="changIndex(item.id,index)" :class="index == nowIndex ? 'nowIndex' : ''">{{item.title}}</span>
     </div>
+    <div class="homeBody">
+      <div ref="homeBody"></div>
+    </div>
+    <v-footer/>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: "homestea",
-        data(){
-            return{
-              headData:'家园介绍',
-              nowIndex : 0,
-              msg:''
-            }
-        },
-      mounted() {
-        this.changIndex(0)
+  export default {
+    name: "homestea",
+    data(){
+      return{
+        headData:'家园介绍',
+        msg:'',
+        nowIndex : 0,
+        titleList : []
+      }
+    },
+    mounted() {
+      this.ajax.get('categories/1?pattern=full').then((res) => {
+        this.titleList = res.data.articles
+        console.log(res.data.articles);
+      })
+      this.changIndex(4,0)
+    },
+    methods:{
+      changIndex(id,index){
+        this.nowIndex = index
+        let url = 'articles/'+id
+        this.ajax.get(url).then((res) => {
+          this.$refs.homeBody.innerHTML =  res.data.body
+        })
       },
-      methods:{
-            changIndex(index){
-              this.nowIndex = index
-              let url = 'articles/'+(index+1)
-              this.ajax.get(url).then((res) => {
-                this.$refs.homeBody.innerHTML =  res.data.body
-              })
-            },
-        }
     }
+  }
 </script>
 
 <style scoped>
@@ -50,7 +52,7 @@
     text-align: center;
     margin-top:10px;
     margin-bottom: 17px;
-   }
+  }
   .homeTitle span{
     cursor:pointer;
     display: inline-block;
@@ -88,7 +90,7 @@
     font-weight:400;
     color:rgba(51,51,51,1);
     line-height: 26px;
-    text-indent:2em;
+    /*text-indent:2em;*/
     padding: 21px 46px 27px 46px;
   }
 </style>

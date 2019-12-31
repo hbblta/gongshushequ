@@ -5,7 +5,7 @@
 
         <swiper :options="swiperOption">
           <swiper-slide class="banner" v-for="(item,index) in bannersList" :key="index">
-            　　　　<img  @click="goBanner(item.url)" :src="item.imageUrl" alt="">
+            　　　　<img  @click="goBanner(item.url)" :src="'https://img.zjdandaotech.com/'+item.imageUrl" alt="">
           </swiper-slide>
           <div  class="swiper-pagination" id="pagination" slot="pagination"></div>
         </swiper>
@@ -22,7 +22,7 @@
           <div class="AllIntText">
             <div class="intText" @click="goToText(item.type,item.id,item.title)" v-for="(item,index) in list">
               <div><img v-if="item.photos.length != 0" :src="item.photos[0] ?item.photos[0] : item.coverUrl ? item.coverUrl : ''" alt=""></div>
-              <span>{{item.body}}</span>
+              <span>{{ToText(item.body)}}</span>
             </div>
             <div class="moreList" @click="moreData()">加载更多</div>
           </div>
@@ -64,7 +64,7 @@
           }
       },
       created() {
-        this.ajax.get('banners?pattern=index&scene=internet').then((res) => {
+        this.ajax.get('banners?scene=internet').then((res) => {
           this.bannersList = res.data
         })
        this.nowIndex(0)
@@ -72,6 +72,10 @@
       mounted() {
       },
       methods:{
+        ToText(HTML){
+          let input = HTML;
+          return input.replace(/<(style|script|iframe)[^>]*?>[\s\S]+?<\/\1\s*>/gi,'').replace(/<[^>]+?>/g,'').replace(/\s+/g,' ').replace(/ /g,' ').replace(/>/g,' ').replace(/&nbsp;/g,'');
+        },
         moreData(){
           if(this.nowIndexs == 0 ){
             this.ajax.get('articles?categoryId=10&from=0&size=9999').then((res) => {

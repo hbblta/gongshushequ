@@ -50,7 +50,6 @@
   font-weight:400;
   color:rgba(51,51,51,1);
   line-height: 26px;
-  text-indent:2em;
 }
   .textBodyData{
     font-size:14px;

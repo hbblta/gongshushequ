@@ -10,9 +10,10 @@
         name: "foots",
       methods:{
         goBack(){
-          this.$router.push({
-            path:'/',
-          })
+          this.$router.go(-1)
+          // this.$router.push({
+          //   path:'/',
+          // })
         }
       }
     }

@@ -21,7 +21,7 @@
           </div>
           <div class="AllIntText">
             <div class="intText" @click="goToText(item.type,item.id,item.title)" v-for="(item,index) in list">
-              <div><img v-if="item.photos.length != 0" :src="item.photos[0] ?item.photos[0] : item.coverUrl ? item.coverUrl : ''" alt=""></div>
+              <div><img  :src="item.type == 'text' ? item.photos[0] : item.coverUrl" alt=""></div>
               <span>{{ToText(item.body)}}</span>
             </div>
             <div class="moreList" @click="moreData()">加载更多</div>

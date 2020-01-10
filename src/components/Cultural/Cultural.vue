@@ -8,13 +8,13 @@
       <div>
         <div class="downMore left"><img @click="rightMore" src="../../assets/left.png" alt=""></div>
         <div class="aboutText">
-          <div class="aboutTextData" @click="goToText(oneData.type,oneData.id,oneData.title)" v-if="oneData">
+          <div class="aboutTextData" @click="goToText(oneData)" v-if="oneData">
             <img :src="oneData.photos ? oneData.photos[0] : oneData.coverUrl ? oneData.coverUrl :   ''"  alt="">
             <p>{{oneData.title}}</p>
             <div>{{ToText(oneData.body)}}</div>
             <hr>
           </div>
-          <div class="aboutTextData aboutTextDataTwo" @click="goToText(twoData.type,twoData.id,twoData.title)" v-if="twoData">
+          <div class="aboutTextData aboutTextDataTwo" @click="goToText(twoData)" v-if="twoData">
             <img :src="twoData.photos ? twoData.photos[0] : twoData.coverUrl ? twoData.coverUrl :    ''" alt="">
             <p>{{twoData.title}}</p>
             <div>{{ToText(twoData.body)}}</div>
@@ -82,21 +82,30 @@
         this.oneData = this.list[this.oneIndex]
         this.twoData = this.list[this.twoIndex]
       },
-      goToText(type,id,title) {
-        if(type == 'text'){
+      goToText(data) {
+        console.log(data);
+        if(data.type == 'text'){
           this.$router.push({
             path: '/textImg',
             query:{
-              id: id,
-              title:title
+              id: data.id,
+              title:data.title
+            }
+          })
+        }else if(data.type == 'video'){
+          this.$router.push({
+            path: '/videosHtml',
+            query:{
+              id: data.id,
+              title:data.title
             }
           })
         }else{
           this.$router.push({
-            path: '/videosHtml',
+            path: '/htmlText',
             query:{
-              id: id,
-              title:title
+              id: data.id,
+              title:data.title
             }
           })
         }

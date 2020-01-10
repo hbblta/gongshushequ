@@ -14,6 +14,7 @@ import InternetBanner from '../components/Internet/InternetBanner'
 import InternetText from '../components/Internet/InternetText'
 import textImg from '../components/headerCopm/textImg'
 import videosHtml from '../components/headerCopm/videosHtml'
+import htmlText from '../components/headerCopm/htmlText'
 
 Vue.use(Router)
 
@@ -88,6 +89,11 @@ export default new Router({
       path: '/videosHtml',
       name: 'videosHtml',
       component: videosHtml
+    },
+    {//视频详情
+      path: '/htmlText',
+      name: 'htmlText',
+      component: htmlText
     },
   ]
 })

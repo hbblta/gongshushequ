@@ -11,12 +11,13 @@
       </div>
       <div class="homeBodyRight">
         <div class="banner">
-          <swiper :options="swiperOption">
-            <swiper-slide v-for="(item,index) in bannersList" :key="index">
-              　　　　<img  @click="goBanner(item.url)" :src="'https://img.zjdandaotech.com/'+item.imageUrl" alt="">
-            </swiper-slide>
-            <div class="swiper-pagination" id="pagination" slot="pagination"></div>
-          </swiper>
+          <img  style="background: #edf0f5"  src="http://img.eyizhihu.com/xh/index.png" alt="">
+<!--          <swiper :options="swiperOption">-->
+<!--            <swiper-slide v-for="(item,index) in bannersList" :key="index">-->
+<!--              　　　　<img  @click="goBanner(item.url)" :src="'https://img.zjdandaotech.com/'+item.imageUrl" alt="">-->
+<!--            </swiper-slide>-->
+<!--            <div class="swiper-pagination" id="pagination" slot="pagination"></div>-->
+<!--          </swiper>-->
         </div>
         <div class="erweimaImg">
           <img  :src="erweiList.leftQrCodeUrl" alt="">

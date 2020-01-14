@@ -56,6 +56,7 @@
     line-height: 26px;
   }
   .textBodyData{
+    boder:none;
     width:800px;
     height:360px;
   }

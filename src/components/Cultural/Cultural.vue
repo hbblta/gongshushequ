@@ -46,8 +46,16 @@
     mounted() {
       this.ajax.get('categories/8?pattern=full').then((res) => {
         this.allList = res.data.children
+
         this.list  = this.allList[this.nowIndex].articles
         this.oneData = this.list[this.oneIndex]
+        // this.$router.push({
+        //   path: '/htmlText',
+        //   query:{
+        //     id: this.oneData.id,
+        //     title:this.oneData.title
+        //   }
+        // })
         this.twoData = this.list[this.twoIndex]
       })
     },
@@ -83,7 +91,6 @@
         this.twoData = this.list[this.twoIndex]
       },
       goToText(data) {
-        console.log(data);
         if(data.type == 'text'){
           this.$router.push({
             path: '/textImg',
